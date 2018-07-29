@@ -42,14 +42,24 @@ namespace ZipPack
         /// <summary>
         /// To be added.
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="fileData"></param>
+        /// <param name="comment"></param>
         /// <returns></returns>
-        public ZipFileBuilder AddFile(string fileName, byte[] fileData)
+        /// <exception cref="Java.Lang.IllegalArgumentException"/>
+        public ZipFileBuilder WithComment(string comment)
         {
-            var entry = new Java.Util.Zip.ZipEntry(fileName);
-            ZipStream.PutNextEntry(entry);
-            ZipStream.Write(fileData);
+            ZipStream.SetComment(comment);
+            return this;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        /// <exception cref="Java.Lang.IllegalArgumentException"/>
+        public ZipFileBuilder WithCompressionLevel(int level)
+        {
+            ZipStream.SetLevel(level);
             return this;
         }
 
@@ -59,6 +69,25 @@ namespace ZipPack
         /// <param name="fileName"></param>
         /// <param name="fileData"></param>
         /// <returns></returns>
+        /// <exception cref="Java.Util.Zip.ZipException"/>
+        /// <exception cref="Java.IO.IOException"/>
+        public ZipFileBuilder AddFile(string fileName, byte[] fileData)
+        {
+            var entry = new Java.Util.Zip.ZipEntry(fileName);
+            ZipStream.PutNextEntry(entry);
+            ZipStream.Write(fileData);
+            ZipStream.CloseEntry();
+            return this;
+        }
+
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="fileData"></param>
+        /// <returns></returns>
+        /// <exception cref="Java.Util.Zip.ZipException"/>
+        /// <exception cref="Java.IO.IOException"/>
         public ZipFileBuilder AddFile(string fileName, string fileData) =>
             AddFile(fileName, System.Text.Encoding.UTF8.GetBytes(fileData));
 
@@ -68,6 +97,8 @@ namespace ZipPack
         /// <param name="fileName"></param>
         /// <param name="filePath"></param>
         /// <returns></returns>
+        /// <exception cref="Java.Util.Zip.ZipException"/>
+        /// <exception cref="Java.IO.IOException"/>
         public ZipFileBuilder AddFile(string fileName, System.IO.Stream stream)
         {
             using (var ms = new System.IO.MemoryStream())
@@ -81,6 +112,8 @@ namespace ZipPack
         /// To be added.
         /// </summary>
         /// <param name="scanCompletedListener"></param>
+        /// <exception cref="Java.Util.Zip.ZipException"/>
+        /// <exception cref="Java.IO.IOException"/>
         public void Build(MediaScannerConnection.IOnScanCompletedListener scanCompletedListener)
         {
             ZipStream.Close();
@@ -91,6 +124,8 @@ namespace ZipPack
         /// <summary>
         /// To be added.
         /// </summary>
+        /// <exception cref="Java.Util.Zip.ZipException"/>
+        /// <exception cref="Java.IO.IOException"/>
         public void Build() => Build(null);
 
         /// <summary>
