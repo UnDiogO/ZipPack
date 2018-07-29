@@ -72,7 +72,7 @@ namespace Apptest
 
         private void OpenDocumentClick(object sender, EventArgs e)
         {
-            this.PerformJpgFileSearch("image/jpeg", AppConstants.RequestCodeOpenDocument, true);
+            this.PerformJpgFileSearch(AppConstants.RequestCodeOpenDocument, true);
         }
 
         private string CreateZipFile(Context context, params Android.Net.Uri[] files)
