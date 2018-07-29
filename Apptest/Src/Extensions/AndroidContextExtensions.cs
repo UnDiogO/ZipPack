@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+
 using Android.Content.PM;
 
 namespace Android.Content

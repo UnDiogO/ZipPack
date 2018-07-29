@@ -4,14 +4,14 @@ using System.Linq;
 
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
+using Android.Runtime;
 using Android.Widget;
 
 using ZipPack;
 
 using Apptest.Constants;
-using Android.Runtime;
-using Android.Content.PM;
 
 namespace Apptest
 {
