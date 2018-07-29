@@ -1,4 +1,6 @@
-﻿using Android.Content;
+﻿using System;
+
+using Android.Content;
 using Android.Media;
 
 namespace ZipPack
@@ -6,20 +8,22 @@ namespace ZipPack
     /// <summary>
     /// To be added.
     /// </summary>
-    public class ZipFileBuilder
+    public class ZipFileBuilder : IDisposable
     {
         /// <summary>
         /// To be added.
         /// </summary>
         public Context Context { get; }
+
         /// <summary>
         /// To be added.
         /// </summary>
         public string FilePath { get; }
+
         /// <summary>
         /// To be added.
         /// </summary>
-        public Java.Util.Zip.ZipOutputStream ZipStream { get; }
+        public Java.Util.Zip.ZipOutputStream ZipStream { get; private set; }
 
         /// <summary>
         /// To be added.
@@ -55,7 +59,7 @@ namespace ZipPack
         /// <param name="fileName"></param>
         /// <param name="fileData"></param>
         /// <returns></returns>
-        public ZipFileBuilder AddFile(string fileName, string fileData) => 
+        public ZipFileBuilder AddFile(string fileName, string fileData) =>
             AddFile(fileName, System.Text.Encoding.UTF8.GetBytes(fileData));
 
         /// <summary>
@@ -80,6 +84,7 @@ namespace ZipPack
         public void Build(MediaScannerConnection.IOnScanCompletedListener scanCompletedListener)
         {
             ZipStream.Close();
+            ZipStream = null;
             MediaScannerConnection.ScanFile(Context, new string[] { FilePath }, new string[] { "application/zip" }, scanCompletedListener);
         }
 
@@ -87,5 +92,16 @@ namespace ZipPack
         /// To be added.
         /// </summary>
         public void Build() => Build(null);
+
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing) => ZipStream?.Dispose();
+
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        public void Dispose() => Dispose(true);
     }
 }
