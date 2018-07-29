@@ -70,10 +70,8 @@ namespace Apptest
             }
         }
 
-        private void OpenDocumentClick(object sender, EventArgs e)
-        {
+        private void OpenDocumentClick(object sender, EventArgs e) =>
             this.PerformJpgFileSearch(AppConstants.RequestCodeOpenDocument, true);
-        }
 
         private string CreateZipFile(Context context, params Android.Net.Uri[] files)
         {
