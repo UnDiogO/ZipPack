@@ -39,22 +39,20 @@ namespace Apptest
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
-            if (requestCode == AppConstants.RequestCodePermissions)
+            if (requestCode == AppConstants.RequestCodePermissions
+                && grantResults.Any(p => p == Permission.Denied))
             {
-                if (grantResults.Any(p => p == Permission.Denied))
-                {
-                    new AlertDialog.Builder(this)
-                        .SetTitle(Android.Resource.String.DialogAlertTitle)
-                        .SetMessage("Permissions are required.")
-                        .SetCancelable(false)
-                        .SetPositiveButton(Android.Resource.String.Ok, AlertDialogPermissionsRequiredClick)
-                        .Create()
-                        .Show();
-                }
+                new AlertDialog.Builder(this)
+                    .SetTitle(Android.Resource.String.DialogAlertTitle)
+                    .SetMessage("Permissions are required.")
+                    .SetCancelable(false)
+                    .SetPositiveButton(Android.Resource.String.Ok, AlertDialogPermissionsRequiredClick)
+                    .Create()
+                    .Show();
             }
         }
 
-        private void AlertDialogPermissionsRequiredClick(object sender, DialogClickEventArgs e) => 
+        private void AlertDialogPermissionsRequiredClick(object sender, DialogClickEventArgs e) =>
             RequestPermissions(this.GetRequestedPermissions(), AppConstants.RequestCodePermissions);
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
